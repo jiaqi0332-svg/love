@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>陈佳奇给李博的告别</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; min-height: 100%; font-family: 'SF Pro Display', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #090909; color: #f7f1e6; }
+    body { overflow-x: hidden; }
+    .blur-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 20% 20%, rgba(255, 214, 168, 0.14), transparent 18%),
+                  radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0.08), transparent 20%),
+                  radial-gradient(circle at 50% 70%, rgba(255, 173, 69, 0.08), transparent 22%);
+      filter: blur(20px);
+      transform: scale(1.05);
+      animation: blurMove 20s ease-in-out infinite;
+    }
+    @keyframes blurMove {
+      0%,100% { transform: translate(0,0) scale(1.05); }
+      50% { transform: translate(4%, -3%) scale(1.08); }
+    }
+    .page {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 16px;
+      z-index: 1;
+    }
+    .hero {
+      position: relative;
+      width: min(100%, 980px);
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 32px;
+      align-items: center;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 32px;
+      box-shadow: 0 40px 120px rgba(0,0,0,0.28);
+      backdrop-filter: blur(22px);
+      padding: 42px;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,215,132,0.06) 40%, transparent 75%);
+      pointer-events: none;
+    }
+    .hero-text {
+      position: relative;
+      z-index: 1;
+    }
+    .eyebrow {
+      font-size: 0.86rem;
+      letter-spacing: 0.26em;
+      color: rgba(255,215,143,0.85);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      opacity: 0.95;
+    }
+    .heading {
+      margin: 0;
+      font-size: clamp(2.8rem, 4vw, 4.8rem);
+      line-height: 0.98;
+      letter-spacing: -0.06em;
+      color: #fff;
+      text-shadow: 0 18px 62px rgba(0,0,0,0.32);
+      opacity: 0;
+      animation: fadeIn 1.2s ease forwards;
+    }
+    .subheading {
+      margin: 24px 0 34px;
+      max-width: 560px;
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: rgba(247,241,230,0.84);
+      opacity: 0;
+      animation: fadeIn 1.2s ease 0.22s forwards;
+    }
+    .form-grid {
+      display: grid;
+      gap: 18px;
+    }
+    .field {
+      display: grid;
+      gap: 8px;
+      text-align: left;
+      opacity: 0;
+      animation: fadeIn 1.2s ease 0.45s forwards;
+    }
+    .field label {
+      font-size: 0.92rem;
+      color: rgba(247,241,230,0.72);
+    }
+    .field input {
+      width: 100%;
+      padding: 18px 20px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.24s ease, box-shadow 0.24s ease;
+      backdrop-filter: blur(12px);
+    }
+    .field input:focus {
+      border-color: rgba(255,215,143,0.75);
+      box-shadow: 0 0 0 6px rgba(255,215,143,0.08);
+    }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px 32px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,215,143,0.18));
+      color: #fff;
+      font-size: 1rem;
+      letter-spacing: 0.04em;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.24s ease, box-shadow 0.24s ease, background 0.24s ease;
+      opacity: 0;
+      animation: fadeIn 1.2s ease 0.65s forwards;
+    }
+    .button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 60px rgba(255,190,117,0.18);
+      background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,215,143,0.22));
+    }
+    .button.secondary {
+      background: rgba(255,215,143,0.12);
+      border-color: rgba(255,215,143,0.28);
+      color: #fff;
+    }
+    .button.secondary:hover {
+      background: rgba(255,215,143,0.18);
+    }
+    .note {
+      margin-top: 18px;
+      color: rgba(247,241,230,0.62);
+      font-size: 0.95rem;
+      line-height: 1.75;
+      opacity: 0;
+      animation: fadeIn 1.2s ease 0.82s forwards;
+    }
+    .visual {
+      position: relative;
+      min-height: 520px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.16));
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: inset 0 0 120px rgba(255,255,255,0.04);
+      backdrop-filter: blur(15px);
+      opacity: 0;
+      animation: fadeIn 1.2s ease 0.35s forwards;
+    }
+    .visual::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 30% 25%, rgba(255,250,240,0.12), transparent 20%),
+                  radial-gradient(circle at 75% 20%, rgba(255,190,117,0.14), transparent 18%);
+      mix-blend-mode: screen;
+      filter: blur(16px);
+      opacity: 0.9;
+    }
+    .netease-player {
+      margin-top: 28px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 28px;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      backdrop-filter: blur(18px);
+      box-shadow: 0 24px 54px rgba(0,0,0,0.24);
+    }
+    .player-cover {
+      width: 106px;
+      height: 106px;
+      min-width: 106px;
+      border-radius: 22px;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,215,143,0.12));
+      position: relative;
+    }
+    .player-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .player-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .player-label {
+      margin-bottom: 10px;
+      color: rgba(255,255,255,0.64);
+      text-transform: uppercase;
+      letter-spacing: 0.24em;
+      font-size: 0.78rem;
+    }
+    .track-name {
+      margin: 0;
+      font-size: 1.32rem;
+      line-height: 1.1;
+      font-weight: 700;
+      color: #fff;
+    }
+    .track-artist {
+      margin: 6px 0 0;
+      color: rgba(255,255,255,0.72);
+      font-size: 0.96rem;
+    }
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .control-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.07);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+      font-size: 1.1rem;
+    }
+    .control-btn:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.14);
+    }
+    .progress-wrap {
+      width: 100%;
+      margin-top: 16px;
+    }
+    .progress {
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.14);
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #ff6a6a, #ffb26a);
+      transition: width 0.1s linear;
+    }
+    .time {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.65);
+    }
+    .player-status {
+      color: rgba(255,255,255,0.78);
+      font-size: 0.9rem;
+      margin-left: auto;
+    }
+    .photo-mask {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 20%, rgba(0,0,0,0.34) 72%);
+      pointer-events: none;
+    }
+    .photo {
+      position: absolute;
+      inset: 0;
+      background: url('./d07322ed7e002c572dc5602a5dac55af.jpg') center/cover no-repeat;
+      filter: grayscale(18%) contrast(1.05) brightness(0.84);
+      opacity: 0.95;
+    }
+    .tagline {
+      position: absolute;
+      bottom: 32px;
+      left: 32px;
+      right: 32px;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      color: rgba(255,255,255,0.92);
+    }
+    .tagline strong {
+      display: block;
+      font-size: 1.3rem;
+      letter-spacing: 0.04em;
+    }
+    .tagline span {
+      font-size: 0.96rem;
+      color: rgba(255,255,255,0.72);
+      line-height: 1.8;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; padding: 32px; }
+      .visual { min-height: 420px; }
+      .hero { gap: 28px; }
+    }
+    @media (max-width: 600px) {
+      .hero { padding: 24px; }
+      .hero-text { text-align: center; }
+      .field { text-align: center; }
+      .field label { text-align: center; }
+      .tagline { left: 20px; right: 20px; bottom: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="blur-layer"></div>
+  <div class="page">
+    <section class="hero">
+      <div class="hero-text">
+        <div class="eyebrow">Farewell</div>
+        <h1 class="heading">陈佳奇给李博的告别</h1>
+        <p class="subheading">这是一封从心底写出的告别信，黑金光影见证最后一段沉默与温柔。</p>
+        <div class="form-grid">
+          <div class="field">
+            <label for="nameA">送别人</label>
+            <input id="nameA" type="text" placeholder="陈佳奇" maxlength="12" />
+          </div>
+          <div class="field">
+            <label for="nameB">被送别人</label>
+            <input id="nameB" type="text" placeholder="李博" maxlength="12" />
+          </div>
+          <button class="button" id="startButton">开始播放音乐</button>
+        </div>
+        <p class="note">点击按钮后，音乐将立即播放，文字也将慢慢显现。</p>
+      </div>
+      <div class="visual">
+        <div class="photo"></div>
+        <div class="photo-mask"></div>
+        <div class="tagline">
+          <strong>最后一句话，将温柔留在这片黑金里。</strong>
+          <span>这是一个沉静的告别空间，送给李博最真挚的告白。</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div style="position: fixed; inset: auto 24px 24px 24px; z-index: 2; pointer-events: none; display: flex; justify-content: flex-end;">
+    <audio id="bgAudio" src="梁博 - 我不知道 (Live).mp3" preload="auto"></audio>
+    <div id="toast" style="pointer-events: auto; display:none; padding: 14px 20px; border-radius: 18px; background: rgba(0,0,0,0.7); color: #f8f3ea; font-size: 0.95rem; backdrop-filter: blur(10px);">请点击“开始播放音乐”开始音乐。</div>
+  </div>
+
+  <script>
+    const nameAInput = document.getElementById('nameA');
+    const nameBInput = document.getElementById('nameB');
+    const startButton = document.getElementById('startButton');
+    const toast = document.getElementById('toast');
+    const bgAudio = document.getElementById('bgAudio');
+
+    function clampName(name, fallback) {
+      return name.trim().slice(0, 12) || fallback;
+    }
+
+    function buildConfession(nameA, nameB) {
+      return `${nameB}，\n\n` +
+             `你知道吗。\n\n` +
+             `我现在看到好看的风景，第一反应已经不是拍照了。\n` +
+             `是：\n` +
+             `“如果你在就好了。”\n\n` +
+             `我以前一直觉得自己挺酷的。\n` +
+             `不主动，不依赖，不黏人。\n\n` +
+             `后来你一出现，\n` +
+             `我开始等消息、看备注、反复点聊天框。\n\n` +
+             `我终于承认了。\n\n` +
+             `原来真正喜欢一个人，\n` +
+             `真的会变得不太像自己。\n\n` +
+             `但如果那个人是你，\n` +
+             `我愿意。\n\n` +
+             `因为你不是我权衡利弊后的选择。\n` +
+             `你是我心甘情愿的失控。\n\n` +
+             `别人问我喜欢什么类型。\n` +
+             `我以前答不上来。\n\n` +
+             `后来发现：\n` +
+             `你站在那里，\n` +
+             `类型就有了答案。\n\n` +
+             `我其实没想过这么快认真。\n` +
+             `可你一靠近，\n` +
+             `我连以后孩子叫什么都差点想好了。\n\n` +
+             `我不是想谈一个短暂的新鲜感。\n` +
+             `我是想和你有以后。\n\n` +
+             `想陪你吃饭。\n` +
+             `陪你熬夜。\n` +
+             `陪你发脾气。\n` +
+             `陪你崩溃。\n` +
+             `陪你从“今天吃什么”聊到“以后住哪里”。\n\n` +
+             `你不用多好看。\n` +
+             `因为在我眼里你已经够犯规了。\n\n` +
+             `有时候我都怀疑你是不是偷偷学过蛊。\n\n` +
+             `不然为什么：\n` +
+             `你随便一句话，\n` +
+             `都能让我开心半天。\n\n` +
+             `别人靠恋爱续命。\n` +
+             `我靠你一句“在干嘛”。\n\n` +
+             `真的。\n\n` +
+             `你出现之后，\n` +
+             `我连网易云都开始听情歌了。\n\n` +
+             `以前觉得“想念”这词挺矫情。\n` +
+             `现在才知道：\n\n` +
+             `原来一个人真能在你脑子里循环播放。\n\n` +
+             `而且关不掉。\n\n` +
+             `如果非让我说喜欢你哪里。\n\n` +
+             `我可能会说：\n` +
+             `是你看向我的时候，\n` +
+             `我突然觉得——\n\n` +
+             `这个乱七八糟的世界，\n` +
+             `好像也没那么糟了。\n\n` +
+             `我不是一个特别会表达的人。\n` +
+             `但如果你愿意靠近一点，\n` +
+             `你会发现：\n\n` +
+             `我所有藏起来的偏爱，\n` +
+             `全都是给你的。\n\n` +
+             `所以。\n\n` +
+             `别让我一个人心动这么久了。\n` +
+             `要不要试试——\n\n` +
+             `陪我谈一场\n` +
+             `以结婚为目的的恋爱。`;
+    }
+
+    function typeWriter(text, element, speed = 45) {
+      element.textContent = '';
+      let idx = 0;
+      const timer = setInterval(() => {
+        element.textContent += text[idx] || '';
+        idx += 1;
+        if (idx >= text.length) clearInterval(timer);
+      }, speed);
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.style.display = 'block';
+      setTimeout(() => toast.style.display = 'none', 3200);
+    }
+
+    function startConfession() {
+      const nameA = clampName(nameAInput.value, '陈佳奇');
+      const nameB = clampName(nameBInput.value, '李博');
+      const message = buildConfession(nameA, nameB);
+      const confessionArea = document.createElement('div');
+      confessionArea.style.position = 'fixed';
+      confessionArea.style.inset = '0';
+      confessionArea.style.background = 'rgba(0,0,0,0.88)';
+      confessionArea.style.color = '#f8f3ea';
+      confessionArea.style.padding = '40px 32px';
+      confessionArea.style.overflowY = 'auto';
+      confessionArea.style.fontSize = '1.05rem';
+      confessionArea.style.lineHeight = '1.85';
+      confessionArea.style.whiteSpace = 'pre-wrap';
+      confessionArea.style.zIndex = '10';
+      confessionArea.style.backdropFilter = 'blur(18px)';
+      confessionArea.style.opacity = '0';
+      confessionArea.style.transition = 'opacity 0.48s ease';
+      confessionArea.textContent = '';
+      document.body.appendChild(confessionArea);
+      requestAnimationFrame(() => confessionArea.style.opacity = '1');
+      typeWriter(message, confessionArea, 55);
+      bgAudio.loop = true;
+      bgAudio.volume = 0.55;
+      bgAudio.play().catch(() => showToast('请再次点击开始播放音乐。'));
+      const closeBtn = document.createElement('button');
+      closeBtn.textContent = '关闭告白';
+      closeBtn.style.position = 'fixed';
+      closeBtn.style.top = '24px';
+      closeBtn.style.right = '24px';
+      closeBtn.style.padding = '14px 22px';
+      closeBtn.style.border = '1px solid rgba(255,255,255,0.15)';
+      closeBtn.style.borderRadius = '999px';
+      closeBtn.style.background = 'rgba(255,255,255,0.04)';
+      closeBtn.style.color = '#f8f3ea';
+      closeBtn.style.cursor = 'pointer';
+      closeBtn.style.backdropFilter = 'blur(12px)';
+      closeBtn.onclick = () => {
+        confessionArea.remove();
+        closeBtn.remove();
+      };
+      document.body.appendChild(closeBtn);
+    }
+
+    startButton.addEventListener('click', startConfession);
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        startButton.click();
+      }
+    });
+  </script>
+</body>
+</html>
